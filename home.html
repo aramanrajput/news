@@ -12,6 +12,9 @@
             height: 800px;
             
         }
+        #container img{
+            width: 200px;
+        }
     </style>
 </head>
 <body>
@@ -22,6 +25,7 @@
 </html>
 <script>
 var container = document.getElementById("container")
+
     async function makeRequest(){
         // window.location = "news.html"
         let input = document.getElementById("input").value
@@ -31,7 +35,7 @@ var container = document.getElementById("container")
 
        // console.log(data)
         
-       shownews(data.articles[0])
+       shownews(data.articles)
 
 
 
@@ -39,16 +43,15 @@ var container = document.getElementById("container")
       
     }
 
-    if(JSON.parse( localStorage.getItem("data")==null)) {
-        localStorage.setItem("data",JSON.stringify([]))
-    }
-
+  
 
 
 
 function shownews(news){
-    console.log(news)
-    
+   console.log(news)
+   container.innerHTML=null
+    news.forEach(function(news_){
+         
       let div = document.createElement("div")
     let title = document.createElement('p')
     
@@ -56,24 +59,21 @@ function shownews(news){
     
     let author = document.createElement("p")
     author.textContent = news_.author
+
     let description = document.createElement("p")
     description.textContent= news_.description
 
     let image = document.createElement("img")
     image.src = news_.urlToImage
+
+    container.append(div)
     div.append(title,image,description,author)
 
-    let data ={
-        title:news_.title,
-        author:news_.author,
-        description:news_.description,
-        image:news_.urlToImage
-    }
+    })
 
-let arr= JSON.parse(localStorage.getItem("data") ) 
-arr.push(data)
-console.log(data)
-localStorage.setItem("data",JSON.stringify(arr))
+
+
+
 
    
 }
@@ -112,6 +112,6 @@ div.append(title, image, description,author)
     }) 
   }  
 
- showrandom()
+ 
     // 67ddb279f1df42b8b025b78bbbf82ab4
 </script>
