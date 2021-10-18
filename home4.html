@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container{
+            display: grid;
+            grid-template-columns: auto auto auto auto;
+            height: 800px;
+            
+        }
+    </style>
+</head>
+<body>
+    <input  type="text" placeholder="search" id="input">
+    <button onclick="makeRequest()" >Search</button>
+    <div id="container" ></div>
+</body>
+</html>
+<script>
+var container = document.getElementById("container")
+    async function makeRequest(){
+        // window.location = "news.html"
+        let input = document.getElementById("input").value
+        let res = await fetch(`https://newsapi.org/v2/everything?q=${input}&from=2021-09-18&sortBy=publishedAt&apiKey=67ddb279f1df42b8b025b78bbbf82ab4`);
+        
+        let data = await res.json();
+
+       // console.log(data)
+        
+       shownews(data.articles[0])
+
+
+
+       
+      
+    }
+
+    if(JSON.parse( localStorage.getItem("data")==null)) {
+        localStorage.setItem("data",JSON.stringify([]))
+    }
+
+
+
+
+function shownews(news){
+    console.log(news)
+    
+      let div = document.createElement("div")
+    let title = document.createElement('p')
+    
+    title.textContent = news_.title
+    
+    let author = document.createElement("p")
+    author.textContent = news_.author
+    let description = document.createElement("p")
+    description.textContent= news_.description
+
+    let image = document.createElement("img")
+    image.src = news_.urlToImage
+    div.append(title,image,description,author)
+
+    let data ={
+        title:news_.title,
+        author:news_.author,
+        description:news_.description,
+        image:news_.urlToImage
+    }
+
+let arr= JSON.parse(localStorage.getItem("data") ) 
+arr.push(data)
+console.log(data)
+localStorage.setItem("data",JSON.stringify(arr))
+
+   
+}
+
+async function makerandomRequest(){
+        let input = document.getElementById("input").value
+        let res = await fetch(`https://newsapi.org/v2/everything?q=top story&from=2021-09-18&sortBy=publishedAt&apiKey=67ddb279f1df42b8b025b78bbbf82ab4`);
+        
+        let data = await res.json();
+
+       // console.log(data.articles)
+        
+       
+       showrandom(data.articles)
+    }
+makerandomRequest()
+
+  function showrandom(news2){
+    
+    news2.forEach(function(newsr){
+      let div = document.createElement("div")
+    let title = document.createElement('p')
+    
+    title.textContent = newsr.title
+    
+    let author = document.createElement("p")
+    author.textContent = newsr.author
+
+    let description = document.createElement("p")
+    description.textContent= newsr.description
+
+    let image = document.createElement("img")
+    image.src = newsr.urlToImage
+container.append(div)
+div.append(title, image, description,author)
+    }) 
+  }  
+
+ showrandom()
+    // 67ddb279f1df42b8b025b78bbbf82ab4
+</script>
